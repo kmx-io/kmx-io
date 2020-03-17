@@ -2,6 +2,9 @@
 
 (asdf:load-system :adams :force t)
 
+(asdf:load-system :cl-heredoc)
+(set-dispatch-macro-character #\# #\> #'cl-heredoc:read-heredoc)
+
 (in-package :adams-user)
 
 (setf (debug-p :shell) t)
@@ -23,11 +26,7 @@
 (resource 'host "vu.kmx.io"
           :user "root"
           :hostname "vu"
-          :packages '("emacs:no_x11" "git" "rsync" "sbcl" "texinfo" "texlive_texmf-full")
-          (resource 'file "/root/test"
-                    :content "toto=tata"
-                    :owner "root"
-                    :group "wheel")
+          :packages '("emacs:no_x11" "git" "nginx" "rsync" "sbcl" "texinfo" "texlive_texmf-full")
           (resource 'group "dx"
                     :gid 19256
                     :ensure :present)
@@ -62,7 +61,138 @@
                     :gid 3001
                     :home "/home/conference"
                     :shell "/bin/ksh"
-                    :ensure :present))
+                    :ensure :present)
+          (resource 'directory "/etc/nginx"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755)
+          (resource 'file "/etc/nginx/nginx.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content #>---------->
+# Take note of http://wiki.nginx.org/Pitfalls
+
+user  www;
+worker_processes  1;
+
+#load_module "modules/ngx_stream_module.so";
+
+error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+#error_log  syslog:server=unix:/dev/log,severity=notice;
+
+#pid        logs/nginx.pid;
+
+worker_rlimit_nofile 1024;
+events {
+    worker_connections  800;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    index         index.html index.htm;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  logs/access.log  main;
+    #access_log  syslog:server=unix:/dev/log,severity=notice main;
+
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server_tokens off;
+
+    include enabled/*.conf;
+}
+----------)
+          (resource 'directory "/etc/nginx/enabled"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755)
+          (resource 'directory "/etc/nginx/available"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755)
+          (resource 'file "/etc/nginx/available/conference-staging.kmx.io.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content #>---------->
+server {
+    listen  80;
+    listen  [::]:80;
+    server_name conference-staging.kmx.io;
+    return 301 "https://conference-staging.kmx.io/";
+}
+server {
+    listen  443 ssl;
+    listen  [::]:443 ssl;
+    server_name  conference-staging.kmx.io;
+    root         /var/www/conference-staging;
+
+    access_log  logs/conference-staging.access.log  main;
+
+    error_page  404              /404.html;
+    error_page   500 502 503 504  /500.html;
+
+    location @rails {
+        proxy_pass   http://127.0.0.1:15000;
+    }
+
+    try_files $uri @rails;
+
+    location ~ /\. {
+        deny  all;
+    }
+
+    include ssl.conf;
+}
+----------)
+          (resource 'file "/etc/nginx/available/conference.kmx.io.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content #>---------->
+server {
+    listen       80;
+    listen       [::]:80;
+    server_name conference.kmx.io;
+    return 301 "https://conference.kmx.io/";
+}
+server {
+    listen       443 ssl;
+    listen       [::]:443 ssl;
+    server_name  conference.kmx.io;
+    root         /var/www/conference;
+
+    access_log  logs/conference.access.log  main;
+
+    error_page  404              /404.html;
+    error_page   500 502 503 504  /500.html;
+
+    location @rails {
+        proxy_pass   http://127.0.0.1:15001;
+    }
+
+    try_files $uri @rails;
+
+    location ~ /\. {
+        deny  all;
+    }
+
+    include ssl.conf;
+}
+----------))
 
 (with-host "vu.kmx.io"
   (sync *host*))
