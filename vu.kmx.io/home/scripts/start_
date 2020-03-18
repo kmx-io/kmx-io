@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+. ./config
+cd "${SITE}"
+
+echo "$(git rev-parse HEAD) start [preparing]" >> ../deploy.log
+
+export SECRET_KEY_BASE=$(head -n 1 ../.secret-key-base)
+
+/home/scripts/prepare
+
+echo "$(git rev-parse HEAD) start" >> ../deploy.log
+bundle25 exec puma -b "tcp://127.0.0.1:${PORT}"
+echo "$(git rev-parse HEAD) stop" >> ../deploy.log

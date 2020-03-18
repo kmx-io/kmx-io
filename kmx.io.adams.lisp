@@ -128,72 +128,22 @@
                     :owner "root"
                     :group "wheel"
                     :mode #o755
-                    :content #>---------->#!/bin/sh
-set -e
-
-. ./config
-
-cd "${SITE}"
-
-git fetch
-git reset --hard "origin/${BRANCH}"
-
-echo "$(git rev-parse HEAD) deploy [preparing]" >> ../deploy.log
-
-export SECRET_KEY_BASE=$(head -n 1 ../.secret-key-base)
-
-/home/scripts/prepare
-
-echo "$(git rev-parse HEAD) deploy" >> ../deploy.log
-bundle25 exec rails restart
-----------)
+                    :content (read-file "vu.kmx.io/home/scripts/deploy"))
           (resource 'file "/home/scripts/prepare"
                     :owner "root"
                     :group "wheel"
                     :mode #o755
-                    :content #>---------->#!/bin/sh
-set -e
-
-bundle25
-bundle-audit25 --update
-
-yarn
-yarn audit
-
-bundle25 exec rake db:dump
-bundle25 exec rake db:migrate
-
-bundle25 exec rake assets:clobber assets:precompile
-
-rsync -aL public/. "/var/www/$USER/"
-----------)
+                    :content (read-file "vu.kmx.io/home/scripts/prepare"))
           (resource 'file "/home/scripts/start"
                     :owner "root"
                     :group "wheel"
                     :mode #o755
-                    :content #>---------->#!/bin/sh
-exec nohup /home/scripts/start_ &
-----------)
+                    :content (read-file "vu.kmx.io/home/scripts/start"))
           (resource 'file "/home/scripts/start_"
                     :owner "root"
                     :group "wheel"
                     :mode #o755
-                    :content #>---------->#!/bin/sh
-set -e
-
-. ./config
-cd "${SITE}"
-
-echo "$(git rev-parse HEAD) start [preparing]" >> ../deploy.log
-
-export SECRET_KEY_BASE=$(head -n 1 ../.secret-key-base)
-
-/home/scripts/prepare
-
-echo "$(git rev-parse HEAD) start" >> ../deploy.log
-bundle25 exec puma -b "tcp://127.0.0.1:${PORT}"
-echo "$(git rev-parse HEAD) stop" >> ../deploy.log
-----------)
+                    :content (read-file "vu.kmx.io/home/scripts/start_"))
           (resource 'file "/var/postgresql/data/pg_hba.conf"
                     :owner "_postgresql"
                     :group "_postgresql"

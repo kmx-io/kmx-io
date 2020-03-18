@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+. ./config
+
+cd "${SITE}"
+
+git fetch
+git reset --hard "origin/${BRANCH}"
+
+echo "$(git rev-parse HEAD) deploy [preparing]" >> ../deploy.log
+
+export SECRET_KEY_BASE=$(head -n 1 ../.secret-key-base)
+
+/home/scripts/prepare
+
+echo "$(git rev-parse HEAD) deploy" >> ../deploy.log
+bundle25 exec rails restart

@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+bundle25
+bundle-audit25 --update
+
+yarn
+yarn audit
+
+bundle25 exec rake db:dump
+bundle25 exec rake db:migrate
+
+bundle25 exec rake assets:clobber assets:precompile
+
+rsync -aL public/. "/var/www/$USER/"
