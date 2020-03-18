@@ -74,7 +74,7 @@
                     :owner "root"
                     :group "git"
                     :mode #o640
-                    :content (read-file "vu.kmx.io/home/git/.ssh/authorized_keys")
+                    :content (read-file "vu.kmx.io/home/git/.ssh/authorized_keys"))
           (resource 'group "conference-staging"
                     :gid 3000
                     :ensure :present)
@@ -148,30 +148,7 @@
                     :owner "_postgresql"
                     :group "_postgresql"
                     :mode #o600
-                    :content #>---------->
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-
-# superusers
-local   all             postgres                                peer
-local   all             dx                                      peer
-local   all             zor                                     peer
-
-# deployments
-local   conference-staging conference-staging                   peer
-local   conference      conference                              peer
-
-# "local" is for Unix domain socket connections only
-#local   all             all                                     scram-sha-256
-# IPv4 local connections:
-#host    all             all             127.0.0.1/32            scram-sha-256
-# IPv6 local connections:
-#host    all             all             ::1/128                 scram-sha-256
-# Allow replication connections from localhost, by a user with the
-# replication privilege.
-#local   replication     all                                     scram-sha-256
-#host    replication     all             127.0.0.1/32            scram-sha-256
-#host    replication     all             ::1/128                 scram-sha-256
-----------))
+                    :content (read-file "vu.kmx.io/var/postgresql/data/pg_hba.conf")))
 
 (with-host "vu.kmx.io"
   (sync *host*))
