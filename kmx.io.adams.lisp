@@ -431,6 +431,34 @@ export SECRET_KEY_BASE=$(head -n 1 ../.secret-key-base)
 echo "$(git rev-parse HEAD) start" >> ../deploy.log
 bundle25 exec puma -b "tcp://127.0.0.1:${PORT}"
 echo "$(git rev-parse HEAD) stop" >> ../deploy.log
+----------)
+          (resource 'file "/var/postgresql/data/pg_hba.conf"
+                    :owner "_postgresql"
+                    :group "_postgresql"
+                    :mode #o600
+                    :content #>---------->
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# superusers
+local   all             postgres                                peer
+local   all             dx                                      peer
+local   all             zor                                     peer
+
+# deployments
+local   conference-staging conference-staging                   peer
+local   conference      conference                              peer
+
+# "local" is for Unix domain socket connections only
+#local   all             all                                     scram-sha-256
+# IPv4 local connections:
+#host    all             all             127.0.0.1/32            scram-sha-256
+# IPv6 local connections:
+#host    all             all             ::1/128                 scram-sha-256
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+#local   replication     all                                     scram-sha-256
+#host    replication     all             127.0.0.1/32            scram-sha-256
+#host    replication     all             ::1/128                 scram-sha-256
 ----------))
 
 (with-host "vu.kmx.io"
