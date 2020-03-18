@@ -114,72 +114,12 @@
                     :owner "root"
                     :group "wheel"
                     :mode #o644
-                    :content #>---------->
-server {
-    listen  80;
-    listen  [::]:80;
-    server_name conference-staging.kmx.io;
-    return 301 "https://conference-staging.kmx.io/";
-}
-server {
-    listen  443 ssl;
-    listen  [::]:443 ssl;
-    server_name  conference-staging.kmx.io;
-    root         /var/www/conference-staging;
-
-    access_log  logs/conference-staging.access.log  main;
-
-    error_page  404              /404.html;
-    error_page   500 502 503 504  /500.html;
-
-    location @rails {
-        proxy_pass   http://127.0.0.1:15000;
-    }
-
-    try_files $uri @rails;
-
-    location ~ /\. {
-        deny  all;
-    }
-
-    include ssl.conf;
-}
-----------)
+                    :content (read-file "vu.kmx.io/etc/nginx/available/conference-staging.kmx.io.conf"))
           (resource 'file "/etc/nginx/available/conference.kmx.io.conf"
                     :owner "root"
                     :group "wheel"
                     :mode #o644
-                    :content #>---------->
-server {
-    listen       80;
-    listen       [::]:80;
-    server_name conference.kmx.io;
-    return 301 "https://conference.kmx.io/";
-}
-server {
-    listen       443 ssl;
-    listen       [::]:443 ssl;
-    server_name  conference.kmx.io;
-    root         /var/www/conference;
-
-    access_log  logs/conference.access.log  main;
-
-    error_page  404              /404.html;
-    error_page   500 502 503 504  /500.html;
-
-    location @rails {
-        proxy_pass   http://127.0.0.1:15001;
-    }
-
-    try_files $uri @rails;
-
-    location ~ /\. {
-        deny  all;
-    }
-
-    include ssl.conf;
-}
-----------)
+                    :content (read-file "vu.kmx.io/etc/nginx/available/conference.kmx.io.conf"))
           (resource 'directory "/home/scripts"
                     :owner "root"
                     :group "wheel"
