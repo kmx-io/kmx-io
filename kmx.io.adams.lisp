@@ -101,51 +101,7 @@
                     :owner "root"
                     :group "wheel"
                     :mode #o644
-                    :content #>---------->
-# Take note of http://wiki.nginx.org/Pitfalls
-
-user  www;
-worker_processes  1;
-
-#load_module "modules/ngx_stream_module.so";
-
-error_log  logs/error.log;
-#error_log  logs/error.log  notice;
-#error_log  logs/error.log  info;
-#error_log  syslog:server=unix:/dev/log,severity=notice;
-
-#pid        logs/nginx.pid;
-
-worker_rlimit_nofile 1024;
-events {
-    worker_connections  800;
-}
-
-
-http {
-    include       mime.types;
-    default_type  application/octet-stream;
-    index         index.html index.htm;
-
-    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
-                      '$status $body_bytes_sent "$http_referer" '
-                      '"$http_user_agent" "$http_x_forwarded_for"';
-
-    access_log  logs/access.log  main;
-    #access_log  syslog:server=unix:/dev/log,severity=notice main;
-
-    #tcp_nopush     on;
-
-    #keepalive_timeout  0;
-    keepalive_timeout  65;
-
-    #gzip  on;
-
-    server_tokens off;
-
-    include enabled/*.conf;
-}
-----------)
+                    :content (read-file "vu.kmx.io/etc/nginx/nginx.conf"))
           (resource 'directory "/etc/nginx/enabled"
                     :owner "root"
                     :group "wheel"
