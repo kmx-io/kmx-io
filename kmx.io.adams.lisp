@@ -61,21 +61,7 @@
                     :owner "root"
                     :group "git"
                     :mode #o640
-                    :content #>---------->
-# kmx.io/conference.kmx.io
-thibpoullain       git-upload-pack  'kmx.io/conference.kmx.io.git'
-thibpoullain       git-receive-pack 'kmx.io/conference.kmx.io.git'
-thodg              git-upload-pack  'kmx.io/conference.kmx.io.git'
-thodg              git-receive-pack 'kmx.io/conference.kmx.io.git'
-zor                git-upload-pack  'kmx.io/conference.kmx.io.git'
-zor                git-receive-pack 'kmx.io/conference.kmx.io.git'
-conference-staging git-upload-pack  'kmx.io/conference.kmx.io.git'
-conference         git-upload-pack  'kmx.io/conference.kmx.io.git'
-
-# thodg/config
-thodg git-upload-pack  'thodg/config.git'
-thodg git-receive-pack 'thodg/config.git'
-----------)
+                    :content (read-file "vu.kmx.io/etc/git-auth.conf"))
           (resource 'directory "/home/git"
                     :owner "git"
                     :group "git"
