@@ -40,6 +40,7 @@
                     :group "wheel"
                     :mode #o644
                     :content (read-file "vu.kmx.io/etc/ssh/sshd_config"))
+          ;; Thomas de Grivel (kmx.io)
           (resource 'group "dx"
                     :gid 19256
                     :ensure :present)
@@ -47,6 +48,15 @@
                     :uid 19256
                     :gid 19256
                     :home "/home/dx"
+                    :ensure :present)
+          ;; William Ribeiro (CapSens) -> port 8000
+          (resource 'group "wilrib"
+                    :gid 6000
+                    :ensure :present)
+          (resource 'user "wilrib"
+                    :gid 6000
+                    :uid 6000
+                    :home "/home/wilrib"
                     :ensure :present)
           (resource 'group "git"
                     :gid 7000
