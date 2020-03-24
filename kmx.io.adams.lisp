@@ -40,6 +40,11 @@
                     :group "wheel"
                     :mode #o644
                     :content (read-file "vu.kmx.io/etc/ssh/sshd_config"))
+          (resource 'file "/usr/local/bin/genpassword"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755
+                    :content (read-file "OpenBSD/usr/local/bin/genpassword"))
           ;; Thomas de Grivel (kmx.io)
           (resource 'group "dx"
                     :gid 19256
@@ -66,6 +71,7 @@
                     :uid 6000
                     :home "/home/wilrib"
                     :ensure :present)
+          ;; git
           (resource 'group "git"
                     :gid 7000
                     :ensure :present)
@@ -93,24 +99,7 @@
                     :group "git"
                     :mode #o640
                     :content (read-file "vu.kmx.io/home/git/.ssh/authorized_keys"))
-          (resource 'group "conference-staging"
-                    :gid 3000
-                    :ensure :present)
-          (resource 'user "conference-staging"
-                    :uid 3000
-                    :gid 3000
-                    :home "/home/conference-staging"
-                    :shell "/bin/ksh"
-                    :ensure :present)
-          (resource 'group "conference"
-                    :gid 3001
-                    :ensure :present)
-          (resource 'user "conference"
-                    :uid 3001
-                    :gid 3001
-                    :home "/home/conference"
-                    :shell "/bin/ksh"
-                    :ensure :present)
+          ;; Nginx
           (resource 'directory "/etc/nginx"
                     :owner "root"
                     :group "wheel"
@@ -128,16 +117,13 @@
                     :owner "root"
                     :group "wheel"
                     :mode #o755)
-          (resource 'file "/etc/nginx/available/conference-staging.kmx.io.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/available/conference-staging.kmx.io.conf"))
-          (resource 'file "/etc/nginx/available/conference.kmx.io.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/available/conference.kmx.io.conf"))
+          ;; PostgreSQL
+          (resource 'file "/var/postgresql/data/pg_hba.conf"
+                    :owner "_postgresql"
+                    :group "_postgresql"
+                    :mode #o600
+                    :content (read-file "vu.kmx.io/var/postgresql/data/pg_hba.conf"))
+          ;; Deploy scripts
           (resource 'directory "/home/scripts"
                     :owner "root"
                     :group "wheel"
@@ -162,11 +148,56 @@
                     :group "wheel"
                     :mode #o755
                     :content (read-file "vu.kmx.io/home/scripts/start_"))
-          (resource 'file "/var/postgresql/data/pg_hba.conf"
-                    :owner "_postgresql"
-                    :group "_postgresql"
-                    :mode #o600
-                    :content (read-file "vu.kmx.io/var/postgresql/data/pg_hba.conf")))
+          ;; Conference-staging
+          (resource 'group "conference-staging"
+                    :gid 3000
+                    :ensure :present)
+          (resource 'user "conference-staging"
+                    :uid 3000
+                    :gid 3000
+                    :home "/home/conference-staging"
+                    :shell "/bin/ksh"
+                    :ensure :present)
+          (resource 'file "/etc/nginx/available/conference-staging.kmx.io.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "vu.kmx.io/etc/nginx/available/conference-staging.kmx.io.conf"))
+          ;; Conference
+          (resource 'group "conference"
+                    :gid 3001
+                    :ensure :present)
+          (resource 'user "conference"
+                    :uid 3001
+                    :gid 3001
+                    :home "/home/conference"
+                    :shell "/bin/ksh"
+                    :ensure :present)
+          (resource 'file "/etc/nginx/available/conference.kmx.io.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "vu.kmx.io/etc/nginx/available/conference.kmx.io.conf"))
+          ;; seuldanslenoir-staging
+          (resource 'group "seuldanslenoir-staging"
+                    :gid 3002
+                    :ensure :present)
+          (resource 'user "seuldanslenoir-staging"
+                    :uid 3002
+                    :gid 3002
+                    :home "/home/seuldanslenoir-staging"
+                    :shell "/bin/ksh"
+                    :ensure :present)
+          (resource 'directory "/var/www/seuldanslenoir-staging"
+                    :owner "seuldanslenoir-staging"
+                    :group "www"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'file "/etc/nginx/available/seuldanslenoir-staging.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "vu.kmx.io/etc/nginx/available/seuldanslenoir-staging.conf")))
 
 (with-host "vu.kmx.io"
   (sync *host*))
