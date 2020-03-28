@@ -193,6 +193,15 @@
                     :home "/home/seuldanslenoir-staging"
                     :shell "/bin/ksh"
                     :ensure :present)
+          (resource 'directory "/home/seuldanslenoir-staging"
+                    :owner "seuldanslenoir-staging"
+                    :group "seuldanslenoir-staging"
+                    :mode #o750)
+          (resource 'file "/home/seuldanslenoir-staging/config"
+                    :owner "seuldanslenoir-staging"
+                    :group "seuldanslenoir-staging"
+                    :mode #o640
+                    :content (read-file "vu.kmx.io/home/seuldanslenoir-staging/config"))
           (resource 'directory "/var/www/seuldanslenoir-staging"
                     :owner "seuldanslenoir-staging"
                     :group "www"
