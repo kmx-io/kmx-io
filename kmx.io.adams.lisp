@@ -109,6 +109,11 @@
                     :group "wheel"
                     :mode #o644
                     :content (read-file "vu.kmx.io/etc/nginx/nginx.conf"))
+          (resource 'file "/etc/nginx/ssl.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "vu.kmx.io/etc/nginx/ssl.conf"))
           (resource 'directory "/etc/nginx/enabled"
                     :owner "root"
                     :group "wheel"
