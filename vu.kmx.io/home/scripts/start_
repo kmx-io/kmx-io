@@ -6,6 +6,7 @@ set -e
 if ! [ -f .secret-key-base ]; then
     genpassword 64 > .secret-key-base
 fi
+chmod 400 .secret-key-base
 
 cd "${SITE}"
 
