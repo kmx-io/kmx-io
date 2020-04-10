@@ -1,0 +1,11 @@
+
+(resource 'host "ams.kmx.io"
+          :user "root"
+          :hostname "ams"
+          :packages '("emacs:no_x11"
+                      "git"
+                      "rsync"
+                      "sbcl"
+                      "texinfo"
+                      "texlive_texmf-full")
+          #.(include "user/dx"))

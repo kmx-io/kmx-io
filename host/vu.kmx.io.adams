@@ -1,35 +1,13 @@
-(in-package :cl-user)
-
-(asdf:load-system :adams :force t)
-
-(asdf:load-system :cl-heredoc)
-(set-dispatch-macro-character #\# #\> #'cl-heredoc:read-heredoc)
-
-(in-package :adams-user)
-
-(setf (debug-p :shell) t)
-(setf (debug-p :sb-shell) nil)
-(adams:clear-resources)
-(adams:clear-probed)
-
-(resource 'host "ams.kmx.io"
-          :user "root"
-          :hostname "ams"
-          :packages '("emacs:no_x11" "git" "rsync" "sbcl" "texinfo" "texlive_texmf-full")
-          (resource 'group "dx"
-                    :gid 19256)
-          (resource 'user "dx"
-                    :uid 19256
-                    :gid 19256
-                    :home "/home/dx"))
-
 (resource 'host "vu.kmx.io"
           :user "root"
           :hostname "vu"
           :packages '("emacs:no_x11"
+                      "elixir"
+                      "erlang-21.2p2v0"
                       "git"
                       "nginx"
                       "postgresql-server"
+                      "rebar21"
                       "rsync"
                       "ruby-2.5.7"
                       "sbcl"
@@ -45,23 +23,8 @@
                     :group "wheel"
                     :mode #o755
                     :content (read-file "OpenBSD/usr/local/bin/genpassword"))
-          ;; Thomas de Grivel (kmx.io)
-          (resource 'group "dx"
-                    :gid 19256
-                    :ensure :present)
-          (resource 'user "dx"
-                    :uid 19256
-                    :gid 19256
-                    :home "/home/dx"
-                    :ensure :present)
-          ;; Thibaut Poullain
-          (resource 'group "vrizzt"
-                    :gid 5000
-                    :ensure :present)
-          (resource 'user "vrizzt"
-                    :uid 5000
-                    :gid 5000
-                    :ensure :present)
+          #.(include "user/dx")
+          #.(include "user/vrizzt")
           ;; William Ribeiro (CapSens) -> port 7000,8000
           (resource 'group "wilrib"
                     :gid 6000
@@ -211,7 +174,28 @@
                     :owner "root"
                     :group "wheel"
                     :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/available/seuldanslenoir-staging.conf")))
-
-(with-host "vu.kmx.io"
-  (sync *host*))
+                    :content (read-file "vu.kmx.io/etc/nginx/available/seuldanslenoir-staging.conf"))
+          ;; mana-staging
+          (resource 'group "mana-staging"
+                    :gid 3003
+                    :ensure :present)
+          (resource 'user "mana-staging"
+                    :uid 3003
+                    :gid 3003
+                    :home "/home/mana-staging"
+                    :shell "/bin/ksh"
+                    :ensure :present)
+          (resource 'directory "/home/mana-staging"
+                    :owner "mana-staging"
+                    :group "mana-staging"
+                    :mode #o750)
+          (resource 'directory "/var/www/mana-staging"
+                    :owner "mana-staging"
+                    :group "www"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'file "/etc/nginx/available/mana-staging.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "vu.kmx.io/etc/nginx/available/mana-staging.conf")))

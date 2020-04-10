@@ -1,0 +1,11 @@
+#!/usr/local/bin/adams --script
+
+#.(include "host/ams.kmx.io")
+#.(include "host/ci.kmx.io")
+#.(include "host/vu.kmx.io")
+
+(with-host "vu.kmx.io"
+  (sync *host*))
+
+(with-host "ci.kmx.io"
+  (sync *host*))
