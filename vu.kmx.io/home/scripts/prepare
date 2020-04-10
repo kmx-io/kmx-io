@@ -4,12 +4,12 @@ set -e
 bundle${RUBY_VER}
 bundle-audit${RUBY_VER} --update
 
-yarn
-yarn audit
+npm install
+npm audit
 
 bundle${RUBY_VER} exec rake db:dump
 bundle${RUBY_VER} exec rake db:migrate
 
 bundle${RUBY_VER} exec rake assets:clobber assets:precompile
 
-rsync -aL public/. "/var/www/$USER/"
+rsync -aLP public/. "/var/www/$USER/"
