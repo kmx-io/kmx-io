@@ -1,0 +1,9 @@
+;; Judy Najnudel
+(resource 'group "judy"
+          :gid 5001
+          :ensure :present)
+(resource 'user "judy"
+          :uid 5001
+          :gid 5001
+          :home "/home/judy"
+          :ensure :present)

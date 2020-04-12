@@ -1,6 +1,9 @@
 #!/usr/local/bin/adams --script
 
+(in-package :adams-user)
+
 #.(include "host/ams.kmx.io")
+#.(include "host/cf.kmx.io")
 #.(include "host/ci.kmx.io")
 #.(include "host/vu.kmx.io")
 
@@ -8,4 +11,7 @@
   (sync *host*))
 
 (with-host "ci.kmx.io"
+  (sync *host*))
+
+(with-host "cf.kmx.io"
   (sync *host*))

@@ -1,0 +1,15 @@
+(resource 'host "cf.kmx.io"
+          :user "root"
+          :hostname "cf"
+          #.(include "user/dx")
+
+          (resource 'file "/etc/pf.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o600
+                    :content (read-file "cf.kmx.io/etc/pf.conf"))
+          (resource 'file "/etc/ssh/sshd_config"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "cf.kmx.io/etc/ssh/sshd_config")))

@@ -24,16 +24,9 @@
                     :mode #o755
                     :content (read-file "OpenBSD/usr/local/bin/genpassword"))
           #.(include "user/dx")
+          #.(include "user/judy")
           #.(include "user/vrizzt")
-          ;; William Ribeiro (CapSens) -> port 7000,8000
-          (resource 'group "wilrib"
-                    :gid 6000
-                    :ensure :present)
-          (resource 'user "wilrib"
-                    :gid 6000
-                    :uid 6000
-                    :home "/home/wilrib"
-                    :ensure :present)
+          #.(include "user/wilrib")
           ;; git
           (resource 'group "git"
                     :gid 7000
