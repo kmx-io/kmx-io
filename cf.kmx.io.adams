@@ -4,6 +4,8 @@
 
 (in-package :adams-user)
 
+;;(trace sync)
+
 #.(include "host/cf.kmx.io")
 
 (with-host "cf.kmx.io"
