@@ -13,6 +13,11 @@
                       "sbcl"
                       "texinfo"
                       "texlive_texmf-full")
+          (resource 'file "/etc/pf.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o600
+                    :content (read-file "vu.kmx.io/etc/pf.conf"))
           (resource 'file "/etc/ssh/sshd_config"
                     :owner "root"
                     :group "wheel"
@@ -80,9 +85,9 @@
                     :mode #o755)
           ;; PostgreSQL
           (resource 'file "/var/postgresql/data/pg_hba.conf"
-                    :owner "_postgresql"
+                    :owner "root"
                     :group "_postgresql"
-                    :mode #o600
+                    :mode #o640
                     :content (read-file "vu.kmx.io/var/postgresql/data/pg_hba.conf"))
           ;; Deploy scripts
           (resource 'directory "/home/scripts"
