@@ -1,4 +1,10 @@
 
+YML = \
+	gitlab.yml \
+	secrets.yml
+
+all: ${YML}
+
 GITLAB_YML = \
 	gitlab.yml.d/01_production_gitlab.yml \
 	gitlab.yml.d/02_email.yml \
@@ -41,3 +47,18 @@ GITLAB_YML = \
 
 gitlab.yml: ${GITLAB_YML}
 	cat ${GITLAB_YML} > $@
+	chmod 644 $@
+
+SECRETS_YML = \
+	secrets.yml.d/01_head.yml \
+	secrets.yml.d/02_secret.yml \
+	secrets.yml.d/03_tail.yml
+
+secrets.yml: ${SECRETS_YML}
+	cat ${SECRETS_YML} > $@
+	chmod 400 $@
+
+clean:
+	rm -f ${YML}
+
+.PHONY: all clean

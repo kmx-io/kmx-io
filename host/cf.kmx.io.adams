@@ -65,4 +65,32 @@
                                  :group "git"
                                  :mode #o644
                                  :content (read-file path))))
-                  (directory #P"cf.kmx.io/home/git/gitlab/config/gitlab.yml.d/*.yml")))
+                  (directory #P"cf.kmx.io/home/git/gitlab/config/gitlab.yml.d/*.yml"))
+          (resource 'directory "/home/git/gitlab/config/secrets.yml.d"
+                    :owner "git"
+                    :group "git"
+                    :mode #o755
+                    :ensure :present)
+          (mapcar (lambda (path)
+                    (let ((name (enough-namestring path (truename #P"cf.kmx.io/"))))
+                      (resource 'file (str "/" name)
+                                :owner "git"
+                                :group "git"
+                                :mode #o644
+                                :content (read-file path))))
+                  (directory #P"cf.kmx.io/home/git/gitlab/config/secrets.yml.d/*.yml"))
+          (resource 'directory "/home/git/gitlab/public/log"
+                    :owner "git"
+                    :group "git"
+                    :mode #o700
+                    :ensure :present)
+          (resource 'directory "/home/git/gitlab/public/tmp"
+                    :owner "git"
+                    :group "git"
+                    :mode #o700
+                    :ensure :present)
+          (resource 'directory "/home/git/gitlab/public/uploads"
+                    :owner "git"
+                    :group "git"
+                    :mode #o700
+                    :ensure :present))
