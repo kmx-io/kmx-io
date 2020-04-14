@@ -2,7 +2,11 @@
           :user "root"
           :hostname "cf"
           #.(include "user/dx")
-
+          (resource 'file "/etc/rc.conf.local"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "cf.kmx.io/etc/rc.conf.local"))
           (resource 'file "/etc/pf.conf"
                     :owner "root"
                     :group "wheel"
@@ -12,4 +16,39 @@
                     :owner "root"
                     :group "wheel"
                     :mode #o644
-                    :content (read-file "cf.kmx.io/etc/ssh/sshd_config")))
+                    :content (read-file "cf.kmx.io/etc/ssh/sshd_config"))
+          (resource 'group "git"
+                    :gid 7120
+                    :ensure :present)
+          (resource 'user "git"
+                    :gid 7120
+                    :uid 7120
+                    :shell "/usr/local/bin/bash"
+                    :groups '("git" "_redis")
+                    :ensure :present)
+          (resource 'directory "/home/git"
+                    :owner "git"
+                    :group "git"
+                    :mode #o750)
+          (resource 'group "postgres"
+                    :gid 7200
+                    :ensure :present)
+          (resource 'user "postgres"
+                    :gid 7200
+                    :uid 7200
+                    :ensure :present)
+          (resource 'file "/var/postgresql/data/pg_hba.conf"
+                    :owner "root"
+                    :group "_postgresql"
+                    :mode #o640
+                    :content (read-file "cf.kmx.io/var/postgresql/data/pg_hba.conf"))
+          (resource 'file "/etc/redis/redis.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "cf.kmx.io/etc/redis/redis.conf"))
+          (resource 'file "/home/git/gitlab/config/gitlab.yml"
+                    :owner "git"
+                    :group "git"
+                    :mode #o644
+                    :content (read-file "cf.kmx.io/home/git/gitlab/config/gitlab.yml")))

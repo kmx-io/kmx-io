@@ -1,0 +1,10 @@
+#!/usr/local/bin/adams --script
+
+(require :adams)
+
+(in-package :adams-user)
+
+#.(include "host/cf.kmx.io")
+
+(with-host "cf.kmx.io"
+  (sync *host*))
