@@ -18,7 +18,7 @@
                     :mode #o644
                     :content (read-file "cf.kmx.io/etc/ssh/sshd_config"))
           (resource 'group "git"
-                    :gid 7120
+                    :gid 7000
                     :ensure :present)
           (resource 'user "git"
                     :gid 7000
@@ -60,7 +60,7 @@
                     :ensure :present)
           (mapcar (lambda (path)
                     (let ((name (enough-namestring path (truename #P"cf.kmx.io/"))))
-                      `(resource 'file ,name
+                      (resource 'file (str "/" name)
                                  :owner "git"
                                  :group "git"
                                  :mode #o644

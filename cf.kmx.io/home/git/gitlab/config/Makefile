@@ -39,5 +39,5 @@ GITLAB_YML = \
 	gitlab.yml.d/37_extra.yml \
 	gitlab.yml.d/38_rack_attack.yml
 
-gitlab.yml: 
+gitlab.yml: ${GITLAB_YML}
 	cat ${GITLAB_YML} > $@
