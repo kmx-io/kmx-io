@@ -1,0 +1,24 @@
+
+  ## Monitoring
+  # Built in monitoring settings
+  monitoring:
+    # Time between sampling of unicorn socket metrics, in seconds
+    # unicorn_sampler_interval: 10
+    # Time between sampling of Puma metrics, in seconds
+    # puma_sampler_interval: 5
+    # IP whitelist to access monitoring endpoints
+    ip_whitelist:
+      - 127.0.0.0/8
+
+    # Sidekiq exporter is webserver built in to Sidekiq to expose Prometheus metrics
+    sidekiq_exporter:
+    #  enabled: true
+    #  address: localhost
+    #  port: 8082
+
+    # Web exporter is webserver built in to Unicorn/Puma to expose Prometheus metrics
+    # It runs alongside the `/metrics` endpoints to ease the publish of metrics
+    web_exporter:
+    #  enabled: true
+    #  address: localhost
+    #  port: 8083

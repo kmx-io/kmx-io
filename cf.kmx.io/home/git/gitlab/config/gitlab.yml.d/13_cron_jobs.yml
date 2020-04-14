@@ -1,0 +1,42 @@
+
+  ## Auxiliary jobs
+  # Periodically executed jobs, to self-heal GitLab, do external synchronizations, etc.
+  # Please read here for more information: https://github.com/ondrejbartas/sidekiq-cron#adding-cron-job
+  cron_jobs:
+    # Flag stuck CI jobs as failed
+    stuck_ci_jobs_worker:
+      cron: "0 * * * *"
+    # Execute scheduled triggers
+    pipeline_schedule_worker:
+      cron: "19 * * * *"
+    # Remove expired build artifacts
+    expire_build_artifacts_worker:
+      cron: "50 * * * *"
+    # Stop expired environments
+    environments_auto_stop_cron_worker:
+      cron: "24 * * * *"
+    # Periodically run 'git fsck' on all repositories. If started more than
+    # once per hour you will have concurrent 'git fsck' jobs.
+    repository_check_worker:
+      cron: "20 * * * *"
+    # Archive live traces which have not been archived yet
+    ci_archive_traces_cron_worker:
+      cron: "17 * * * *"
+    # Send admin emails once a week
+    admin_email_worker:
+      cron: "0 0 * * 0"
+    # Send emails for personal tokens which are about to expire
+    personal_access_tokens_expiring_worker:
+      cron: "0 1 * * *"
+
+    # Remove outdated repository archives
+    repository_archive_cache_worker:
+      cron: "0 * * * *"
+
+    # Verify custom GitLab Pages domains
+    pages_domain_verification_cron_worker:
+      cron: "*/15 * * * *"
+
+    # Periodically migrate diffs from the database to external storage
+    schedule_migrate_external_diffs_worker:
+      cron: "15 * * * *"

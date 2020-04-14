@@ -1,0 +1,7 @@
+
+  ## Error Reporting and Logging with Sentry
+  sentry:
+    # enabled: false
+    # dsn: https://<key>@sentry.io/<project>
+    # clientside_dsn: https://<key>@sentry.io/<project>
+    # environment: 'production' # e.g. development, staging, production

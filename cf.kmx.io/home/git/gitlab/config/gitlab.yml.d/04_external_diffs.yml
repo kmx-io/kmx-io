@@ -1,0 +1,18 @@
+
+  ## Merge request external diff storage
+  external_diffs:
+    # If disabled (the default), the diffs are in-database. Otherwise, they can
+    # be stored on disk, or in object storage
+    enabled: false
+    # The location where external diffs are stored (default: shared/lfs-external-diffs).
+    # storage_path: shared/external-diffs
+    # object_store:
+    #   enabled: false
+    #   remote_directory: external-diffs
+    #   background_upload: false
+    #   proxy_download: false
+    #   connection:
+    #     provider: AWS
+    #     aws_access_key_id: AWS_ACCESS_KEY_ID
+    #     aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+    #     region: us-east-1

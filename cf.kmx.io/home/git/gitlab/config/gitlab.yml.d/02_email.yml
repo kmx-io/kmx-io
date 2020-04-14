@@ -1,0 +1,37 @@
+
+  ## Reply by email
+  # Allow users to comment on issues and merge requests by replying to notification emails.
+  # For documentation on how to set this up, see http://doc.gitlab.com/ce/administration/reply_by_email.html
+  incoming_email:
+    enabled: false
+
+    # The email address including the `%{key}` placeholder that will be replaced to reference the item being replied to.
+    # The placeholder can be omitted but if present, it must appear in the "user" part of the address (before the `@`).
+    # Please be aware that a placeholder is required for the Service Desk feature to work.
+    address: "gitlab-incoming+%{key}@gmail.com"
+
+    # Email account username
+    # With third party providers, this is usually the full email address.
+    # With self-hosted email servers, this is usually the user part of the email address.
+    user: "gitlab-incoming@gmail.com"
+    # Email account password
+    password: "[REDACTED]"
+
+    # IMAP server host
+    host: "imap.gmail.com"
+    # IMAP server port
+    port: 993
+    # Whether the IMAP server uses SSL
+    ssl: true
+    # Whether the IMAP server uses StartTLS
+    start_tls: false
+
+    # The mailbox where incoming mail will end up. Usually "inbox".
+    mailbox: "inbox"
+    # The IDLE command timeout.
+    idle_timeout: 60
+    # The log file path for the structured log file.
+    # Since `mail_room` is run independently of Rails, an absolute path is preferred.
+    # The default is 'log/mail_room_json.log' relative to the root of the Rails app.
+    #
+    # log_path: log/mail_room_json.log

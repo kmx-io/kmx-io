@@ -1,0 +1,21 @@
+
+  ## GitLab Pages
+  pages:
+    enabled: false
+    access_control: false
+    # The location where pages are stored (default: shared/pages).
+    # path: shared/pages
+
+    # The domain under which the pages are served:
+    # http://group.example.com/project
+    # or project path can be a group page: group.example.com
+    host: example.com
+    port: 80 # Set to 443 if you serve the pages with HTTPS
+    https: false # Set to true if you serve the pages with HTTPS
+    artifacts_server: true # Set to false if you want to disable online view of HTML artifacts
+    # external_http: ["1.1.1.1:80", "[2001::1]:80"] # If defined, enables custom domain support in GitLab Pages
+    # external_https: ["1.1.1.1:443", "[2001::1]:443"] # If defined, enables custom domain and certificate support in GitLab Pages
+
+    # File that contains the shared secret key for verifying access for gitlab-pages.
+    # Default is '.gitlab_pages_secret' relative to Rails.root (i.e. root of the GitLab app).
+    # secret_file: /home/git/gitlab/.gitlab_pages_secret

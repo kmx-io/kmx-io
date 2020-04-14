@@ -1,0 +1,4 @@
+
+  ## GitLab Elasticsearch settings
+  elasticsearch:
+    indexer_path: /home/git/gitlab-elasticsearch-indexer/

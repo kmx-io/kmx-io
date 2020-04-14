@@ -1,0 +1,8 @@
+
+  ## Feature Flag https://docs.gitlab.com/ee/user/project/operations/feature_flags.html
+  feature_flags:
+    unleash:
+      # enabled: false
+      # url: https://gitlab.com/api/v4/feature_flags/unleash/<project_id>
+      # app_name: gitlab.com # Environment name of your GitLab instance
+      # instance_id: INSTANCE_ID

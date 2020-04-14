@@ -21,8 +21,8 @@
                     :gid 7120
                     :ensure :present)
           (resource 'user "git"
-                    :gid 7120
-                    :uid 7120
+                    :gid 7000
+                    :uid 7000
                     :shell "/usr/local/bin/bash"
                     :groups '("git" "_redis")
                     :ensure :present)
@@ -47,8 +47,22 @@
                     :group "wheel"
                     :mode #o644
                     :content (read-file "cf.kmx.io/etc/redis/redis.conf"))
-          (resource 'file "/home/git/gitlab/config/gitlab.yml"
+          ;; gitlab
+          (resource 'file "/home/git/gitlab/config/Makefile"
                     :owner "git"
                     :group "git"
                     :mode #o644
-                    :content (read-file "cf.kmx.io/home/git/gitlab/config/gitlab.yml")))
+                    :content (read-file "cf.kmx.io/home/git/gitlab/config/Makefile"))
+          (resource 'directory "/home/git/gitlab/config/gitlab.yml.d"
+                    :owner "git"
+                    :group "git"
+                    :mode #o755
+                    :ensure :present)
+          (mapcar (lambda (path)
+                    (let ((name (enough-namestring path (truename #P"cf.kmx.io/"))))
+                      `(resource 'file ,name
+                                 :owner "git"
+                                 :group "git"
+                                 :mode #o644
+                                 :content (read-file path))))
+                  (directory #P"cf.kmx.io/home/git/gitlab/config/gitlab.yml.d/*.yml")))

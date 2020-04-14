@@ -1,0 +1,6 @@
+
+  ## Mattermost
+  ## For enabling Add to Mattermost button
+  mattermost:
+    enabled: false
+    host: 'https://mattermost.example.com'

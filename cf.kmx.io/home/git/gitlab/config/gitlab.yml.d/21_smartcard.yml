@@ -1,0 +1,20 @@
+
+  ## Smartcard authentication settings
+  smartcard:
+    # Allow smartcard authentication
+    enabled: false
+
+    # Path to a file containing a CA certificate
+    ca_file: '/etc/ssl/certs/CA.pem'
+
+    # Host and port where the client side certificate is requested by the
+    # webserver (NGINX/Apache)
+    # client_certificate_required_host: smartcard.gitlab.example.com
+    # client_certificate_required_port: 3444
+
+    # Browser session with smartcard sign-in is required for Git access
+    # required_for_git_access: false
+
+    # Use X.509 SAN extensions certificates to identify GitLab users
+    # Add a subjectAltName to your certificates like: email:user
+    # san_extensions: true
