@@ -79,6 +79,11 @@
                                 :mode #o644
                                 :content (read-file path))))
                   (directory #P"cf.kmx.io/home/git/gitlab/config/secrets.yml.d/*.yml"))
+          (resource 'file "/home/git/gitlab/config/unicorn.rb"
+                    :owner "git"
+                    :group "git"
+                    :mode #o755
+                    :content (read-file "cf.kmx.io/home/git/gitlab/config/unicorn.rb"))
           (resource 'directory "/home/git/gitlab/public/log"
                     :owner "git"
                     :group "git"
@@ -87,7 +92,7 @@
           (resource 'directory "/home/git/gitlab/public/tmp"
                     :owner "git"
                     :group "git"
-                    :mode #o700
+                    :mode #o711
                     :ensure :present)
           (resource 'directory "/home/git/gitlab/public/uploads"
                     :owner "git"
