@@ -63,6 +63,11 @@
                     :group "git"
                     :mode #o644
                     :content (read-file "cf.kmx.io/home/git/gitlab/config/Makefile"))
+          (resource 'file "/home/git/gitlab/config/database.yml"
+                    :owner "git"
+                    :group "git"
+                    :mode #o600
+                    :content (read-file "cf.kmx.io/home/git/gitlab/config/database.yml"))
           (resource 'directory "/home/git/gitlab/config/gitlab.yml.d"
                     :owner "git"
                     :group "git"
@@ -76,11 +81,11 @@
                                  :mode #o644
                                  :content (read-file path))))
                   (directory #P"cf.kmx.io/home/git/gitlab/config/gitlab.yml.d/*.yml"))
-          (resource 'file "/home/git/gitlab/config/resque.rb"
+          (resource 'file "/home/git/gitlab/config/resque.yml"
                     :owner "git"
                     :group "git"
                     :mode #o644
-                    :content (read-file "cf.kmx.io/home/git/gitlab/config/resque.rb"))
+                    :content (read-file "cf.kmx.io/home/git/gitlab/config/resque.yml"))
           (resource 'directory "/home/git/gitlab/config/secrets.yml.d"
                     :owner "git"
                     :group "git"
