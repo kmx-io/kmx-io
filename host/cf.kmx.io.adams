@@ -2,21 +2,25 @@
           :user "root"
           :hostname "cf"
           #.(include "user/dx")
+          ;; rc
           (resource 'file "/etc/rc.conf.local"
                     :owner "root"
                     :group "wheel"
                     :mode #o644
                     :content (read-file "cf.kmx.io/etc/rc.conf.local"))
+          ;; pf
           (resource 'file "/etc/pf.conf"
                     :owner "root"
                     :group "wheel"
                     :mode #o600
                     :content (read-file "cf.kmx.io/etc/pf.conf"))
+          ;; sshd
           (resource 'file "/etc/ssh/sshd_config"
                     :owner "root"
                     :group "wheel"
                     :mode #o644
                     :content (read-file "cf.kmx.io/etc/ssh/sshd_config"))
+          ;; git
           (resource 'group "git"
                     :gid 7000
                     :ensure :present)
@@ -30,6 +34,12 @@
                     :owner "git"
                     :group "git"
                     :mode #o750)
+          (resource 'file "/home/git/.gitconfig"
+                    :owner "git"
+                    :group "git"
+                    :mode #o600
+                    :content (read-file "cf.kmx.io/home/git/.gitconfig"))
+          ;; postgresql
           (resource 'group "postgres"
                     :gid 7200
                     :ensure :present)
