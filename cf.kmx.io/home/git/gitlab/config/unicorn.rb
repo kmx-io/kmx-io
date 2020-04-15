@@ -22,7 +22,7 @@
 # Read about unicorn workers here:
 # http://doc.gitlab.com/ee/install/requirements.html#unicorn-workers
 #
-worker_processes 3
+worker_processes 2
 
 # Since Unicorn is never exposed to outside clients, it does not need to
 # run on the standard HTTP port (80), there is no reason to start Unicorn
@@ -56,7 +56,7 @@ listen "127.0.0.1:8080", :tcp_nopush => true
 #
 # For more information see http://stackoverflow.com/a/21682112/752049
 #
-timeout 60
+timeout 3600
 
 # feel free to point this anywhere accessible on the filesystem
 pid "/home/git/gitlab/tmp/pids/unicorn.pid"
