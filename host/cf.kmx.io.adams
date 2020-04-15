@@ -76,6 +76,11 @@
                                  :mode #o644
                                  :content (read-file path))))
                   (directory #P"cf.kmx.io/home/git/gitlab/config/gitlab.yml.d/*.yml"))
+          (resource 'file "/home/git/gitlab/config/resque.rb"
+                    :owner "git"
+                    :group "git"
+                    :mode #o644
+                    :content (read-file "cf.kmx.io/home/git/gitlab/config/resque.rb"))
           (resource 'directory "/home/git/gitlab/config/secrets.yml.d"
                     :owner "git"
                     :group "git"
