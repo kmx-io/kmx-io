@@ -13,21 +13,62 @@
                       "sbcl"
                       "texinfo"
                       "texlive_texmf-full")
+          ;; rc
+          (resource 'file "/etc/rc.conf.local"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o600
+                    :content (read-file "vu.kmx.io/etc/rc.conf.local"))
+          (resource 'file "/etc/hostname.enc0"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "vu.kmx.io/etc/hostname.enc0"))
+          ;; pf
           (resource 'file "/etc/pf.conf"
                     :owner "root"
                     :group "wheel"
                     :mode #o600
                     :content (read-file "vu.kmx.io/etc/pf.conf"))
+          ;; iked
+          (resource 'file "/etc/iked.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o600
+                    :content (read-file "vu.kmx.io/etc/iked.conf"))
+          (resource 'directory "/etc/iked"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'directory "/etc/iked/pubkeys"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'directory "/etc/iked/pubkeys/fqdn"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'file "/etc/iked/pubkeys/fqdn/cf.kmx.io"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "iked/pubkeys/cf.kmx.io"))
+          ;; sshd
           (resource 'file "/etc/ssh/sshd_config"
                     :owner "root"
                     :group "wheel"
                     :mode #o644
                     :content (read-file "vu.kmx.io/etc/ssh/sshd_config"))
+          ;; genpassword
           (resource 'file "/usr/local/bin/genpassword"
                     :owner "root"
                     :group "wheel"
                     :mode #o755
                     :content (read-file "OpenBSD/usr/local/bin/genpassword"))
+          ;; users
           #.(include "user/dx")
           #.(include "user/judy")
           #.(include "user/vrizzt")

@@ -8,18 +8,67 @@
                     :group "wheel"
                     :mode #o644
                     :content (read-file "cf.kmx.io/etc/rc.conf.local"))
+          (resource 'file "/etc/hostname.enc0"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "cf.kmx.io/etc/hostname.enc0"))
           ;; pf
           (resource 'file "/etc/pf.conf"
                     :owner "root"
                     :group "wheel"
                     :mode #o600
                     :content (read-file "cf.kmx.io/etc/pf.conf"))
+          ;; iked
+          (resource 'file "/etc/iked.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o600
+                    :content (read-file "cf.kmx.io/etc/iked.conf"))
+          (resource 'directory "/etc/iked"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'directory "/etc/iked/pubkeys"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'directory "/etc/iked/pubkeys/fqdn"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'file "/etc/iked/pubkeys/fqdn/vu.kmx.io"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "iked/pubkeys/vu.kmx.io"))
           ;; sshd
           (resource 'file "/etc/ssh/sshd_config"
                     :owner "root"
                     :group "wheel"
                     :mode #o644
                     :content (read-file "cf.kmx.io/etc/ssh/sshd_config"))
+          ;; postgresql
+          (resource 'group "postgres"
+                    :gid 7200
+                    :ensure :present)
+          (resource 'user "postgres"
+                    :gid 7200
+                    :uid 7200
+                    :ensure :present)
+          (resource 'file "/var/postgresql/data/pg_hba.conf"
+                    :owner "root"
+                    :group "_postgresql"
+                    :mode #o640
+                    :content (read-file "cf.kmx.io/var/postgresql/data/pg_hba.conf"))
+          (resource 'file "/etc/redis/redis.conf"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "cf.kmx.io/etc/redis/redis.conf"))
           ;; git
           (resource 'group "git"
                     :gid 7000
@@ -39,24 +88,6 @@
                     :group "git"
                     :mode #o600
                     :content (read-file "cf.kmx.io/home/git/.gitconfig"))
-          ;; postgresql
-          (resource 'group "postgres"
-                    :gid 7200
-                    :ensure :present)
-          (resource 'user "postgres"
-                    :gid 7200
-                    :uid 7200
-                    :ensure :present)
-          (resource 'file "/var/postgresql/data/pg_hba.conf"
-                    :owner "root"
-                    :group "_postgresql"
-                    :mode #o640
-                    :content (read-file "cf.kmx.io/var/postgresql/data/pg_hba.conf"))
-          (resource 'file "/etc/redis/redis.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "cf.kmx.io/etc/redis/redis.conf"))
           ;; gitlab
           (resource 'file "/home/git/gitlab/config/Makefile"
                     :owner "git"
@@ -115,6 +146,11 @@
                     :mode #o711
                     :ensure :present)
           (resource 'directory "/home/git/gitlab/public/uploads"
+                    :owner "git"
+                    :group "git"
+                    :mode #o700
+                    :ensure :present)
+          (resource 'directory "/home/git/repositories"
                     :owner "git"
                     :group "git"
                     :mode #o700
