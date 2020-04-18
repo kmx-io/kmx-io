@@ -1,0 +1,26 @@
+(resource 'group "git"
+          :gid 7000
+          :ensure :present)
+(resource 'user "git"
+          :uid 7000
+          :gid 7000
+          :home "/home/git"
+          :shell "/usr/local/bin/git-auth"
+          :ensure :present)
+(resource 'file "/etc/git-auth.conf"
+          :owner "root"
+          :group "git"
+          :mode #o640
+          :content (read-file "vu.kmx.io/etc/git-auth.conf"))
+(resource 'directory "/home/git"
+          :owner "git"
+          :group "git"
+          :mode #o700)
+(resource 'directory "/home/git/.ssh"
+          :owner "git"
+          :group "git"
+          :mode #o700)
+(static-file "/home/git/.ssh/authorized_keys"
+             :owner "root"
+             :group "git"
+             :mode #o640)

@@ -23,36 +23,7 @@
                        :owner "root"
                        :group "wheel"
                        :mode #o600)
-          (resource 'directory "/etc/iked"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :ensure :present)
-          (resource 'directory "/etc/iked/pubkeys"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :ensure :present)
-          (resource 'directory "/etc/iked/pubkeys/fqdn"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :ensure :present)
-          (resource 'directory "/etc/iked/pubkeys/ipv4"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :ensure :present)
-          (resource 'file "/etc/iked/pubkeys/fqdn/vpn.kmx.io"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "iked/pubkeys/vpn.kmx.io"))
-          (resource 'file "/etc/iked/pubkeys/fqdn/vu.kmx.io"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "iked/pubkeys/vu.kmx.io"))
+          #.(include "iked.adams")
           ;; sshd
           (resource 'file "/etc/ssh/sshd_config"
                     :owner "root"
