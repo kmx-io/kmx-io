@@ -1,30 +1,28 @@
+(setq *host* (host "cf.kmx.io"))
+
 (resource 'host "cf.kmx.io"
           :user "root"
           :hostname "cf"
           #.(include "user/dx")
           ;; rc
-          (resource 'file "/etc/rc.conf.local"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "cf.kmx.io/etc/rc.conf.local"))
-          (resource 'file "/etc/hostname.enc0"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "cf.kmx.io/etc/hostname.enc0"))
+          (static-file "/etc/rc.conf.local"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
+          (static-file "/etc/hostname.enc0"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
           ;; pf
-          (resource 'file "/etc/pf.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o600
-                    :content (read-file "cf.kmx.io/etc/pf.conf"))
+          (static-file "/etc/pf.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
           ;; iked
-          (resource 'file "/etc/iked.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o600
-                    :content (read-file "cf.kmx.io/etc/iked.conf"))
+          (static-file "/etc/iked.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
           (resource 'directory "/etc/iked"
                     :owner "root"
                     :group "wheel"
@@ -40,6 +38,16 @@
                     :group "wheel"
                     :mode #o755
                     :ensure :present)
+          (resource 'directory "/etc/iked/pubkeys/ipv4"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o755
+                    :ensure :present)
+          (resource 'file "/etc/iked/pubkeys/fqdn/vpn.kmx.io"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "iked/pubkeys/vpn.kmx.io"))
           (resource 'file "/etc/iked/pubkeys/fqdn/vu.kmx.io"
                     :owner "root"
                     :group "wheel"
@@ -107,10 +115,10 @@
           (mapcar (lambda (path)
                     (let ((name (enough-namestring path (truename #P"cf.kmx.io/"))))
                       (resource 'file (str "/" name)
-                                 :owner "git"
-                                 :group "git"
-                                 :mode #o644
-                                 :content (read-file path))))
+                                :owner "git"
+                                :group "git"
+                                :mode #o644
+                                :content (read-file path))))
                   (directory #P"cf.kmx.io/home/git/gitlab/config/gitlab.yml.d/*.yml"))
           (resource 'file "/home/git/gitlab/config/resque.yml"
                     :owner "git"
@@ -122,14 +130,10 @@
                     :group "git"
                     :mode #o755
                     :ensure :present)
-          (mapcar (lambda (path)
-                    (let ((name (enough-namestring path (truename #P"cf.kmx.io/"))))
-                      (resource 'file (str "/" name)
-                                :owner "git"
-                                :group "git"
-                                :mode #o644
-                                :content (read-file path))))
-                  (directory #P"cf.kmx.io/home/git/gitlab/config/secrets.yml.d/*.yml"))
+          (static-directory "/home/git/gitlab/config/secrets.yml.d/*.yml"
+                            :owner "git"
+                            :group "git"
+                            :mode #o644)
           (resource 'file "/home/git/gitlab/config/unicorn.rb"
                     :owner "git"
                     :group "git"

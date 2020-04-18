@@ -1,3 +1,8 @@
+(setq *host* (host "vu.kmx.io"))
+
+(defun reload-pf.conf ()
+  (run "pfctl -f /etc/pf.conf"))
+
 (resource 'host "vu.kmx.io"
           :user "root"
           :hostname "vu"
@@ -14,28 +19,29 @@
                       "texinfo"
                       "texlive_texmf-full")
           ;; rc
-          (resource 'file "/etc/rc.conf.local"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o600
-                    :content (read-file "vu.kmx.io/etc/rc.conf.local"))
-          (resource 'file "/etc/hostname.enc0"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/hostname.enc0"))
+          (static-file "/etc/rc.conf.local"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
+          (static-file "/etc/hostname.enc0"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
+          (static-file "/etc/hostname.vio0"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
           ;; pf
-          (resource 'file "/etc/pf.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o600
-                    :content (read-file "vu.kmx.io/etc/pf.conf"))
+          (static-file "/etc/pf.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600
+                       :after #'reload-pf.conf)
           ;; iked
-          (resource 'file "/etc/iked.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o600
-                    :content (read-file "vu.kmx.io/etc/iked.conf"))
+          (static-file "/etc/iked.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
           (resource 'directory "/etc/iked"
                     :owner "root"
                     :group "wheel"
@@ -56,6 +62,11 @@
                     :group "wheel"
                     :mode #o644
                     :content (read-file "iked/pubkeys/cf.kmx.io"))
+          (resource 'file "/etc/iked/pubkeys/fqdn/vpn.kmx.io"
+                    :owner "root"
+                    :group "wheel"
+                    :mode #o644
+                    :content (read-file "iked/pubkeys/vpn.kmx.io"))
           ;; sshd
           (resource 'file "/etc/ssh/sshd_config"
                     :owner "root"
