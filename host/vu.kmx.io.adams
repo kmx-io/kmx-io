@@ -1,7 +1,8 @@
 (setq *host* (host "vu.kmx.io"))
 
-(defun reload-pf.conf ()
-  (run "pfctl -f /etc/pf.conf"))
+(defun reload-pf.conf (resource os)
+  (declare (ignore resource os))
+  (run-as-root "pfctl -f /etc/pf.conf"))
 
 (resource 'host "vu.kmx.io"
           :user "root"
@@ -44,11 +45,10 @@
                        :mode #o600)
           #.(include "iked.adams")
           ;; sshd
-          (resource 'file "/etc/ssh/sshd_config"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/ssh/sshd_config"))
+          (static-file "/etc/ssh/sshd_config"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o644)
           ;; genpassword
           (resource 'file "/usr/local/bin/genpassword"
                     :owner "root"
@@ -63,59 +63,33 @@
           ;; git
           #.(include "git.adams")
           ;; Nginx
-          (resource 'directory "/etc/nginx"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755)
-          (resource 'file "/etc/nginx/nginx.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/nginx.conf"))
-          (resource 'file "/etc/nginx/ssl.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/ssl.conf"))
-          (resource 'directory "/etc/nginx/enabled"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755)
-          (resource 'directory "/etc/nginx/available"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755)
+          #.(include "nginx.adams")
           ;; PostgreSQL
-          (resource 'file "/var/postgresql/data/pg_hba.conf"
-                    :owner "root"
-                    :group "_postgresql"
-                    :mode #o640
-                    :content (read-file "vu.kmx.io/var/postgresql/data/pg_hba.conf"))
+          (static-file "/var/postgresql/data/pg_hba.conf"
+                       :owner "root"
+                       :group "_postgresql"
+                       :mode #o640)
           ;; Deploy scripts
           (resource 'directory "/home/scripts"
                     :owner "root"
                     :group "wheel"
                     :mode #o755)
-          (resource 'file "/home/scripts/deploy"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :content (read-file "vu.kmx.io/home/scripts/deploy"))
-          (resource 'file "/home/scripts/prepare"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :content (read-file "vu.kmx.io/home/scripts/prepare"))
-          (resource 'file "/home/scripts/start"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :content (read-file "vu.kmx.io/home/scripts/start"))
-          (resource 'file "/home/scripts/start_"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :content (read-file "vu.kmx.io/home/scripts/start_"))
+          (static-file "/home/scripts/deploy"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o755)
+          (static-file "/home/scripts/prepare"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o755)
+          (static-file "/home/scripts/start"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o755)
+          (static-file "/home/scripts/start_"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o755)
           ;; Conference-staging
           (resource 'group "conference-staging"
                     :gid 3000
@@ -126,11 +100,10 @@
                     :home "/home/conference-staging"
                     :shell "/bin/ksh"
                     :ensure :present)
-          (resource 'file "/etc/nginx/available/conference-staging.kmx.io.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/available/conference-staging.kmx.io.conf"))
+          (static-file "/etc/nginx/available/conference-staging.kmx.io.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o644)
           ;; Conference
           (resource 'group "conference"
                     :gid 3001
@@ -141,11 +114,10 @@
                     :home "/home/conference"
                     :shell "/bin/ksh"
                     :ensure :present)
-          (resource 'file "/etc/nginx/available/conference.kmx.io.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/available/conference.kmx.io.conf"))
+          (static-file "/etc/nginx/available/conference.kmx.io.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o644)
           ;; seuldanslenoir-staging
           (resource 'group "seuldanslenoir-staging"
                     :gid 3002
@@ -160,21 +132,19 @@
                     :owner "seuldanslenoir-staging"
                     :group "seuldanslenoir-staging"
                     :mode #o750)
-          (resource 'file "/home/seuldanslenoir-staging/config"
-                    :owner "seuldanslenoir-staging"
-                    :group "seuldanslenoir-staging"
-                    :mode #o640
-                    :content (read-file "vu.kmx.io/home/seuldanslenoir-staging/config"))
+          (static-file "/home/seuldanslenoir-staging/config"
+                       :owner "seuldanslenoir-staging"
+                       :group "seuldanslenoir-staging"
+                       :mode #o640)
           (resource 'directory "/var/www/seuldanslenoir-staging"
                     :owner "seuldanslenoir-staging"
                     :group "www"
                     :mode #o755
                     :ensure :present)
-          (resource 'file "/etc/nginx/available/seuldanslenoir-staging.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/available/seuldanslenoir-staging.conf"))
+          (static-file "/etc/nginx/available/seuldanslenoir-staging.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o644)
           ;; mana-staging
           (resource 'group "mana-staging"
                     :gid 3003
@@ -194,8 +164,7 @@
                     :group "www"
                     :mode #o755
                     :ensure :present)
-          (resource 'file "/etc/nginx/available/mana-staging.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "vu.kmx.io/etc/nginx/available/mana-staging.conf")))
+          (static-file "/etc/nginx/available/mana-staging.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o644))
