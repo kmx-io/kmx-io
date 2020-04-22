@@ -4,6 +4,8 @@
 
 (in-package :adams-user)
 
+(load "OpenBSD/reload.lisp")
+
 #.(include "host/vu.kmx.io")
 
 (with-host "vu.kmx.io"

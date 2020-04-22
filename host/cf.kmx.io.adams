@@ -3,6 +3,7 @@
 (resource 'host "cf.kmx.io"
           :user "root"
           :hostname "cf"
+          ;; users
           #.(include "user/dx")
           ;; rc
           (static-file "/etc/rc.conf.local"
@@ -14,40 +15,18 @@
                        :group "wheel"
                        :mode #o600)
           ;; pf
-          (static-file "/etc/pf.conf"
-                       :owner "root"
-                       :group "wheel"
-                       :mode #o600)
+          #.(include "pf")
           ;; iked
-          (static-file "/etc/iked.conf"
+          #.(include "iked")
+          ;; sshd
+          #.(include "sshd")
+          ;; postgresql
+          #.(include "postgresql")
+          ;; redis
+          (static-file "/etc/redis/redis.conf"
                        :owner "root"
                        :group "wheel"
-                       :mode #o600)
-          #.(include "iked.adams")
-          ;; sshd
-          (resource 'file "/etc/ssh/sshd_config"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "cf.kmx.io/etc/ssh/sshd_config"))
-          ;; postgresql
-          (resource 'group "postgres"
-                    :gid 7200
-                    :ensure :present)
-          (resource 'user "postgres"
-                    :gid 7200
-                    :uid 7200
-                    :ensure :present)
-          (resource 'file "/var/postgresql/data/pg_hba.conf"
-                    :owner "root"
-                    :group "_postgresql"
-                    :mode #o640
-                    :content (read-file "cf.kmx.io/var/postgresql/data/pg_hba.conf"))
-          (resource 'file "/etc/redis/redis.conf"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o644
-                    :content (read-file "cf.kmx.io/etc/redis/redis.conf"))
+                       :mode #o644)
           ;; git
           (resource 'group "git"
                     :gid 7000
@@ -91,11 +70,10 @@
                                 :mode #o644
                                 :content (read-file path))))
                   (directory #P"cf.kmx.io/home/git/gitlab/config/gitlab.yml.d/*.yml"))
-          (resource 'file "/home/git/gitlab/config/resque.yml"
-                    :owner "git"
-                    :group "git"
-                    :mode #o644
-                    :content (read-file "cf.kmx.io/home/git/gitlab/config/resque.yml"))
+          (static-file "/home/git/gitlab/config/resque.yml"
+                       :owner "git"
+                       :group "git"
+                       :mode #o644)
           (resource 'directory "/home/git/gitlab/config/secrets.yml.d"
                     :owner "git"
                     :group "git"
@@ -105,11 +83,10 @@
                             :owner "git"
                             :group "git"
                             :mode #o644)
-          (resource 'file "/home/git/gitlab/config/unicorn.rb"
-                    :owner "git"
-                    :group "git"
-                    :mode #o644
-                    :content (read-file "cf.kmx.io/home/git/gitlab/config/unicorn.rb"))
+          (static-file "/home/git/gitlab/config/unicorn.rb"
+                       :owner "git"
+                       :group "git"
+                       :mode #o644)
           (resource 'directory "/home/git/gitlab/public/log"
                     :owner "git"
                     :group "git"

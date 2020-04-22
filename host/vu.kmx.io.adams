@@ -1,21 +1,5 @@
 (setq *host* (host "vu.kmx.io"))
 
-(defun reload-iked (resource os)
-  (declare (ignore resource os))
-  (run-as-root "/etc/rc.d/iked reload"))
-
-(defun reload-pf.conf (resource os)
-  (declare (ignore resource os))
-  (run-as-root "pfctl -f /etc/pf.conf"))
-
-(defun reload-postgresql (resource os)
-  (declare (ignore resource os))
-  (run-as-root "/etc/rc.d/postgresql reload"))
-
-(defun reload-sshd (resource os)
-  (declare (ignore resource os))
-  (run-as-root "/etc/rc.d/sshd reload"))
-
 (resource 'host "vu.kmx.io"
           :user "root"
           :hostname "vu"
@@ -45,45 +29,24 @@
                        :group "wheel"
                        :mode #o600)
           ;; pf
-          (static-file "/etc/pf.conf"
-                       :owner "root"
-                       :group "wheel"
-                       :mode #o600
-                       :after #'reload-pf.conf)
+          #.(include "pf")
           ;; iked
-          (static-file "/etc/iked.conf"
-                       :owner "root"
-                       :group "wheel"
-                       :mode #o600
-                       :after #'reload-iked)
-          #.(include "iked.adams")
+          #.(include "iked")
           ;; sshd
-          (static-file "/etc/ssh/sshd_config"
-                       :owner "root"
-                       :group "wheel"
-                       :mode #o644
-                       :after #'reload-sshd)
+          #.(include "sshd")
           ;; genpassword
-          (resource 'file "/usr/local/bin/genpassword"
-                    :owner "root"
-                    :group "wheel"
-                    :mode #o755
-                    :content (read-file "OpenBSD/usr/local/bin/genpassword"))
+          #.(include "OpenBSD/genpassword")
           ;; users
           #.(include "user/dx")
           #.(include "user/judy")
           #.(include "user/vrizzt")
           #.(include "user/wilrib")
           ;; git
-          #.(include "git.adams")
+          #.(include "git")
           ;; Nginx
-          #.(include "nginx.adams")
+          #.(include "nginx")
           ;; PostgreSQL
-          (static-file "/var/postgresql/data/pg_hba.conf"
-                       :owner "root"
-                       :group "_postgresql"
-                       :mode #o640
-                       :after #'reload-postgresql)
+          #.(include "postgresql")
           ;; Deploy scripts
           (resource 'directory "/home/scripts"
                     :owner "root"

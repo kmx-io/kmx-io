@@ -4,7 +4,7 @@
 
 (in-package :adams-user)
 
-;;(trace sync)
+(load "OpenBSD/reload.lisp")
 
 #.(include "host/cf.kmx.io")
 

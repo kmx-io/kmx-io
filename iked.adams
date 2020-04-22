@@ -1,3 +1,8 @@
+(static-file "/etc/iked.conf"
+             :owner "root"
+             :group "wheel"
+             :mode #o600
+             :after #'reload-iked)
 (resource 'directory "/etc/iked"
           :owner "root"
           :group "wheel"
