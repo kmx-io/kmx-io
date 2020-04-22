@@ -1,0 +1,23 @@
+(setq *host* (host "cf.kmx.io"))
+
+(resource 'host "amd.kmx.io"
+          :user "root"
+          :hostname "amd"
+          #.(include "user/dx")
+          ;; rc
+          (static-file "/etc/rc.conf.local"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
+          (static-file "/etc/hostname.enc0"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
+          ;; pf
+          #.(include "pf")
+          ;; iked
+          #.(include "iked")
+          ;; sshd
+          #.(include "sshd")
+          ;; postgresql
+          #.(include "postgresql"))
