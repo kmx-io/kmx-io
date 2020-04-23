@@ -123,6 +123,10 @@
                        :owner "root"
                        :group "wheel"
                        :mode #o644)
+          (static-file "/etc/rc.d/seuldanslenoir_staging"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o755)
           ;; mana-staging
           (resource 'group "mana-staging"
                     :gid 3003
