@@ -15,3 +15,10 @@
 ```
   wilrib            6000
 ```
+
+## Services
+```
+  git               7000
+  postgres          7200
+  tunnel            7800
+```

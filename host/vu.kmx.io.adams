@@ -36,6 +36,8 @@
           #.(include "sshd")
           ;; genpassword
           #.(include "OpenBSD/genpassword")
+          ;; tunnel
+          #.(include "tunnel")
           ;; users
           #.(include "user/dx")
           #.(include "user/judy")

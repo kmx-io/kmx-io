@@ -1,1 +1,1 @@
-pkg_scripts=nginx postgresql seuldanslenoir_staging
+pkg_scripts=nginx postgresql mana_staging seuldanslenoir_staging
