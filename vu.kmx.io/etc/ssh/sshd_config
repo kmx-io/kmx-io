@@ -60,7 +60,7 @@ AuthorizedKeysFile	.ssh/authorized_keys
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
-GatewayPorts yes
+GatewayPorts clientspecified
 #X11Forwarding no
 #X11DisplayOffset 10
 #X11UseLocalhost yes

@@ -28,6 +28,10 @@
                        :owner "root"
                        :group "wheel"
                        :mode #o600)
+          (static-file "/etc/hostname.vio1"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o600)
           ;; pf
           #.(include "pf")
           ;; iked
@@ -36,6 +40,8 @@
           #.(include "sshd")
           ;; genpassword
           #.(include "OpenBSD/genpassword")
+          ;; backup
+          #.(include "OpenBSD/backup")
           ;; tunnel
           #.(include "tunnel")
           ;; users
@@ -47,6 +53,14 @@
           #.(include "git")
           ;; Nginx
           #.(include "nginx")
+          (static-file "/etc/nginx/listen_http.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o644)
+          (static-file "/etc/nginx/listen_https.conf"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o644)
           ;; PostgreSQL
           #.(include "postgresql")
           ;; Deploy scripts

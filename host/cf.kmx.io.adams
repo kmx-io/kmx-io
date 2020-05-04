@@ -20,6 +20,14 @@
           #.(include "iked")
           ;; sshd
           #.(include "sshd")
+          ;; genpassword
+          #.(include "OpenBSD/genpassword")
+          ;; backup
+          #.(include "OpenBSD/backup")
+          (static-file "/usr/local/bin/backup-cf.kmx.io"
+                       :owner "root"
+                       :group "wheel"
+                       :mode #o755)
           ;; postgresql
           #.(include "postgresql")
           ;; redis
