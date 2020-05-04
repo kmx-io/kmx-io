@@ -1,4 +1,4 @@
-(setq *host* (host "cf.kmx.io"))
+(setq *host* (host "amd.kmx.io"))
 
 (resource 'host "amd.kmx.io"
           :user "root"
