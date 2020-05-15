@@ -1,0 +1,19 @@
+#!/bin/bash
+
+I=0
+N=$1
+J=$(echo "$2 % (2 ^ $N - 1)" | bc)
+
+move_n() {
+    if [[ $I -eq $J ]]; then
+        echo $1
+        exit
+    fi
+    I=$(($I + 1))
+    if [[ $1 -gt 1 ]]; then
+        move_n $(($1 - 1))
+        move_n $(($1 - 1))
+    fi
+}
+
+move_n $N
